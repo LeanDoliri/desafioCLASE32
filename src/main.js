@@ -9,7 +9,6 @@ import config from "./config.js";
 
 import mensajesWs from "./routers/ws/mensajes.js";
 import productosWs from "./routers/ws/productos.js";
-// import randomNumbersWs from "./routers/ws/randomNumbers.js"
 
 import productosWebRouter from "./routers/web/home.js";
 import loginWebRouter from "./routers/web/login.js";
@@ -86,7 +85,6 @@ app.get("/api/randoms", async(req, res)=>{
     forked.send(cant);
     forked.on('message', result => {
       socket.emit("randomNumbers", result) 
-      console.log(result);
     });
   });
   res.render("randoms");
