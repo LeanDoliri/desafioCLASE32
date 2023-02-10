@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Coche",
+    "price": "401.00",
+    "thumbnail": "http://placeimg.com/640/480",
+    "id": 1
+  },
+  {
+    "title": "Silla",
+    "price": "28.00",
+    "thumbnail": "http://placeimg.com/640/480",
+    "id": 2
+  },
+  {
+    "title": "Patatas fritas",
+    "price": "411.00",
+    "thumbnail": "http://placeimg.com/640/480",
+    "id": 3
+  },
+  {
+    "title": "Teclado",
+    "price": "496.00",
+    "thumbnail": "http://placeimg.com/640/480",
+    "id": 4
+  },
+  {
+    "title": "Coche",
+    "price": "909.00",
+    "thumbnail": "http://placeimg.com/640/480",
+    "id": 5
+  },
+  {
+    "title": "vino",
+    "price": "1500",
+    "thumbnail": "https://dummyimage.com/250/000/fff",
+    "id": 6
+  }
+]

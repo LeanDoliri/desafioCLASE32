@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Formulario de Ingreso de Productos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/estilos.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function createLi(text) {
+            let li = document.createElement("li");
+            li.innerHTML = text;
+            return li;
+        }
+
+        socket.on("randomNumbers", (result) => {
+            const div = document.getElementById("getRandomNumbers");
+            div.innerHTML = "";
+            for (var key in result) {
+                const li = createLi(key + ": " + result[key])
+                div.appendChild(li)
+            }    
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container mt-3">
+        <h1 class="alert alert-success">Resultado:</h1>
+        <div class="jumbotron alert alert-success">
+            <ul id="getRandomNumbers"></ul>
+        </div>
+    </div>
+</body>
+
+</html>
