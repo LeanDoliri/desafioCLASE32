@@ -13,8 +13,11 @@ import productosWs from "./routers/ws/productos.js";
 import productosWebRouter from "./routers/web/home.js";
 import loginWebRouter from "./routers/web/login.js";
 
-import { fork } from 'child_process';
+import { fork } from "child_process";
 
+import cluster from "cluster";
+import os from "os";
+const CPU_CORES = os.cpus().length;
 //--------------------------------------------
 // instancio servidor, socket y api
 
@@ -68,23 +71,26 @@ app.get("/info", (req, res) => {
     "Argumentos de entrada": process.argv.slice(2).join(", "),
     "Nombre de la plataforma (sistema operativo)": process.platform,
     "Versión de node.js": process.version,
-    "Memoria total reservada (rss)": parseInt(process.memoryUsage().rss / 1024 / 1024),
+    "Memoria total reservada (rss)": parseInt(
+      process.memoryUsage().rss / 1024 / 1024
+    ),
     "Path de ejecución": process.execPath,
     "Process id": process.pid,
     "Carpeta del proyecto": process.cwd(),
+    "Número de Procesadores": CPU_CORES,
   };
   res.send(datos);
 });
 
-const forked = fork('./src/randomNumbers.js');
+const forked = fork("./src/randomNumbers.js");
 
-app.get("/api/randoms", async(req, res)=>{
-  const { cant = 100000000 } = req.query;
-  io.on('connection', async (socket)=>{
+app.get("/api/randoms", async (req, res) => {
+  const { cant = 1000000000 } = req.query;
+  io.on("connection", async (socket) => {
     console.log("Nuevo cliente conectado!");
     forked.send(cant);
-    forked.on('message', result => {
-      socket.emit("randomNumbers", result) 
+    forked.on("message", (result) => {
+      socket.emit("randomNumbers", result);
     });
   });
   res.render("randoms");
@@ -93,11 +99,41 @@ app.get("/api/randoms", async(req, res)=>{
 //--------------------------------------------
 // inicio el servidor
 
-const connectedServer = httpServer.listen(config.PORT, () => {
-  console.log(
-    `Servidor http escuchando en el puerto ${connectedServer.address().port}`
+const forkMode = config.mode !== "cluster";
+
+if (forkMode) {
+  const connectedServer = httpServer.listen(config.PORT, () => {
+    console.log(
+      `Servidor express escuchando en el puerto: ${config.PORT} - PID Worker: ${process.pid}`
+    );
+  });
+  connectedServer.on("error", (error) =>
+    console.log(`Error en servidor ${error}`)
   );
-});
-connectedServer.on("error", (error) =>
-  console.log(`Error en servidor ${error}`)
-);
+} else {
+  if (config.mode == "cluster" && cluster.isPrimary) {
+    console.log("Cant de cores:", CPU_CORES);
+
+    for (let i = 0; i < CPU_CORES; i++) {
+      cluster.fork();
+    }
+
+    cluster.on("online", (worker) => {
+      console.log(`Worker ${worker.process.pid} is online`);
+    });
+
+    cluster.on("exit", (worker) => {
+      console.log(`Worker ${process.pid} ${worker.id} ${worker.pid} finalizo ${new Date().toLocaleString()}`);
+      cluster.fork();
+    });
+  } else {
+    const connectedServer = httpServer.listen(config.PORT, () => {
+      console.log(
+        `Servidor express escuchando en el puerto: ${config.PORT} - PID Worker: ${process.pid}`
+      );
+    });
+    connectedServer.on("error", (error) =>
+      console.log(`Error en servidor ${error}`)
+    );
+  }
+}

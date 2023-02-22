@@ -1,0 +1,7 @@
+server modo fork: npm run start -- -p 8080;
+server modo cluster: npm run start -- -p 8080 -m cluster;
+
+forever: forever start src/main.js -- -p 8080;
+
+pm2 modo fork: pm2 start src/main.js -n "serverCluster" -w;
+pm2 modo cluster: pm2 start src/main.js -n "serverCluster" -w -i max;
