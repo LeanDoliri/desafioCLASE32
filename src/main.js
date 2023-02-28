@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import session from "express-session";
 import { Server as HttpServer } from "http";
 import { Server as Socket } from "socket.io";
@@ -18,6 +19,8 @@ import { fork } from "child_process";
 import cluster from "cluster";
 import os from "os";
 const CPU_CORES = os.cpus().length;
+
+import { logInfo, logWarn } from "./logs/winston.js";
 //--------------------------------------------
 // instancio servidor, socket y api
 
@@ -34,7 +37,7 @@ app.set("view engine", "ejs");
 // configuro el socket
 
 io.on("connection", async (socket) => {
-  console.log("Nuevo cliente conectado!");
+  // console.log("Nuevo cliente conectado!");
 
   mensajesWs(socket);
   productosWs(socket);
@@ -45,6 +48,7 @@ io.on("connection", async (socket) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(compression());
 
 app.use(
   session({
@@ -63,6 +67,11 @@ app.use(
 
 //--------------------------------------------
 // rutas
+app.use((req, res, next) => {
+  logInfo(`${req.method} ${req.originalUrl}`);
+  next();
+})
+
 app.use(productosWebRouter);
 app.use(loginWebRouter);
 
@@ -79,21 +88,27 @@ app.get("/info", (req, res) => {
     "Carpeta del proyecto": process.cwd(),
     "Número de Procesadores": CPU_CORES,
   };
+  // console.log(datos);
   res.send(datos);
 });
 
 const forked = fork("./src/randomNumbers.js");
 
-app.get("/api/randoms", async (req, res) => {
-  const { cant = 1000000000 } = req.query;
-  io.on("connection", async (socket) => {
-    console.log("Nuevo cliente conectado!");
-    forked.send(cant);
-    forked.on("message", (result) => {
-      socket.emit("randomNumbers", result);
-    });
-  });
-  res.render("randoms");
+// app.get("/api/randoms", async (req, res) => {
+//   const { cant = 1000000000 } = req.query;
+//   io.on("connection", async (socket) => {
+//     // console.log("Nuevo cliente conectado!");
+//     forked.send(cant);
+//     forked.on("message", (result) => {
+//       socket.emit("randomNumbers", result);
+//     });
+//   });
+//   res.render("randoms");
+// });
+
+app.use((req, res, next) => {
+  logWarn(`${req.method} ${req.url} - ruta inexistente!`);
+  next();
 });
 
 //--------------------------------------------

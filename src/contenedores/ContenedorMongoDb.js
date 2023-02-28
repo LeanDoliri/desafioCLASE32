@@ -1,5 +1,6 @@
 import mongoose, { model } from 'mongoose';
 import config from '../config.js';
+import { logError } from '../logs/winston.js';
 
 mongoose.set('strictQuery', false);
 
@@ -21,6 +22,7 @@ class ContenedorMongoDb {
             const elem = await this.coleccion.find({_id: id});
             return elem;
         } catch (error) {
+            logError(error);
             console.log(error);
         }
     }
@@ -30,6 +32,7 @@ class ContenedorMongoDb {
             const elementos = await this.coleccion.find({});
             return elementos;
         } catch (error) {
+            logError(error);
             console.log(error);
         }
     }
@@ -40,6 +43,7 @@ class ContenedorMongoDb {
             const savedeElem = await elemSave.save();
             return savedeElem;
         } catch (error) {
+            logError(error);
             console.log(error);
         }
     }
@@ -51,6 +55,7 @@ class ContenedorMongoDb {
             const savedeNewElem = await newElemSave.save();
             return savedeNewElem;
         } catch (error) {
+            logError(error);
             console.log(error);
         }
     }
@@ -61,6 +66,7 @@ class ContenedorMongoDb {
             const elementos = await this.coleccion.find({});
             return elementos;
         } catch (error) {
+            logError(error);
             console.log(error);
         }
     }
@@ -71,6 +77,7 @@ class ContenedorMongoDb {
             const elementos = await this.coleccion.find({});
             return elementos;
         } catch (error) {
+            logError(error);
             console.log(error);
         }
     }

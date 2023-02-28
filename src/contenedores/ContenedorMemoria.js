@@ -14,7 +14,6 @@ class ContenedorMemoria {
     }
 
     guardar(elem) {
-
         let newId
         if (this.elementos.length == 0) {
             newId = 1

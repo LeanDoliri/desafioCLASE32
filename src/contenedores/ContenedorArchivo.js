@@ -11,6 +11,7 @@ class ContenedorArchivo {
       const element = data.find((element) => id == element.id);
       return element;
     } catch (error) {
+      logError(error);
       console.log(error);
     }
   }
@@ -20,6 +21,7 @@ class ContenedorArchivo {
       const read = await fs.readFile(this.ruta, "utf-8");
       return JSON.parse(read);
     } catch (error) {
+      logError(error);
       console.log(error);
     }
   }
@@ -37,18 +39,9 @@ class ContenedorArchivo {
       data.push(newObj);
       await fs.writeFile(this.ruta, JSON.stringify(data, null, 2));
     } catch (error) {
+      logError(error);
       console.log(error);
     }
-    // try {
-    //     const data = await this.listarAll();
-    //     data.push(element);
-
-    //     await fs.writeFile(this.ruta, JSON.stringify(data, null, 2), 'utf-8');
-
-    //     return element;
-    // } catch (error) {
-    //     console.log(error);
-    // }
   }
 
   async actualizar(elem) {
@@ -63,6 +56,7 @@ class ContenedorArchivo {
 
       return newElement;
     } catch (error) {
+      logError(error);
       console.log(error);
     }
   }
@@ -76,6 +70,7 @@ class ContenedorArchivo {
 
       return newData;
     } catch (error) {
+      logError(error);
       console.log(error);
     }
   }
@@ -85,6 +80,7 @@ class ContenedorArchivo {
       await fs.writeFile(this.ruta, JSON.stringify([], null, 2), "utf-8");
       return this.listarAll();
     } catch (error) {
+      logError(error);
       console.log(error);
     }
   }
