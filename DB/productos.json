@@ -34,5 +34,17 @@
     "price": "1500",
     "thumbnail": "https://dummyimage.com/250/000/fff",
     "id": 6
+  },
+  {
+    "title": "Antigona",
+    "price": "1100",
+    "thumbnail": "https://i.pinimg.com/236x/ed/a7/83/eda783c0c9d9cc8d2482409ed767900f.jpg",
+    "id": 7
+  },
+  {
+    "title": "Chiquero",
+    "price": "1100",
+    "thumbnail": "https://i.pinimg.com/236x/ed/a7/83/eda783c0c9d9cc8d2482409ed767900f.jpg",
+    "id": 8
   }
 ]

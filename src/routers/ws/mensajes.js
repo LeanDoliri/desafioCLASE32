@@ -1,6 +1,14 @@
 import mensajesApi from "../../api/mensajes.js";
 import { normalizarMensajes } from "../../normalizr/mensajes.js";
 
+import express from "express";
+import { Server as HttpServer } from "http";
+import { Server as Socket } from "socket.io";
+
+const app = express();
+const httpServer = new HttpServer(app);
+const io = new Socket(httpServer)
+
 async function listarMensajes() {
   const archivoMensajes = await mensajesApi.listarAll();
   const normalizados = normalizarMensajes(archivoMensajes);

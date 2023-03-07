@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "author": {
+      "mail": "",
+      "name": "Lean",
+      "lastName": "",
+      "age": "",
+      "username": "",
+      "avatar": ""
+    },
+    "text": "Hola!",
+    "date": "2/3/2023 13:44:07",
+    "id": 1
+  },
+  {
+    "author": {
+      "mail": "",
+      "name": "Belu",
+      "lastName": "",
+      "age": "",
+      "username": "",
+      "avatar": ""
+    },
+    "text": "Hola Lean!",
+    "date": "2/3/2023 13:44:25",
+    "id": 2
+  },
+  {
+    "author": {
+      "mail": "",
+      "name": "Lean",
+      "lastName": "",
+      "age": "",
+      "username": "",
+      "avatar": ""
+    },
+    "text": "Holaaa",
+    "date": "2/3/2023 13:44:48",
+    "id": 3
+  }
+]

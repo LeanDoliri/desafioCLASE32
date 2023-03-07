@@ -5,7 +5,7 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "start": "0x src/main.js",
+    "start": "nodemon src/main.js",
     "test": "node benchmark.js"
   },
   "keywords": [],
