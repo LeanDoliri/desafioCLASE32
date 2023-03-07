@@ -1,4 +1,4 @@
-node_modules/
-performace/
-nginx.conf
-logs/
+/node_modules/
+/performance/
+/logs/
+/nginx.conf
